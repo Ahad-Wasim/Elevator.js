@@ -1,36 +1,45 @@
-// Elevator Game
 
-// Note Just focus on the main Functionality. Once thats working than focus on adding goodies.
+/*  Elevator Rules */
+
+//  Floors start from zero temporarily.  		=)
+
+//  Each Elevator takes two seconds to go up a floor.
+
+//  Elevator can only hold up to a certain amount of pounds. (Anywhere from 1000 - 6000); NOTE higher the weight. The more money the customer has to pay for the elevator. Were going to start off with 3000 lbs.
 
 
+//  Elevator have assigned areas. Ex. Shoes Dept(3 Elevators)  Pants Dept(2 Elevators)     =)
 
-// Every Elevator is assinged to a certain area
-
-// going up a floor takes 2 seconds
-
-// Elevator can be programmed to have as many floors as it wants
-
-// Each Elevator should let you know if it is going up. Or if its going down.
-
-// When a Elevator is called the closest one should come to you if its going your direction.
-
-// Need Elevator code that will go down from currentFloor
-
-// As a elevator goes up it can stop and pick up other customers as well.
-
-// The customer should call an elevator and it should automatically be programmed to give you the one that is the most closest to you.
+//  Each Department does have a number of floors     =)
 
 
 
 
 
+/* Elevator Steps */
+
+// 1. Each Elevator starts at its current location =)
+
+// 2. When a call is recieved from a person, the elevator will have to check to see which elevator is the closest to that call and to see if that call is going to the same direction that the elevator is going.
+
+// 3. After arriving at that floor the elevator, the elevator can only pick up a certain amount of people from their.
+
+// 4. After picking up the customers up the  (By Direction it means UP || DOWN)
+
+// 5. The elevator can pick somebody up on the way only if they are going that certain direction.
+
+// 6. Elevator than drops all the people off and waits for its next request.
 
 
-// Problems
 
-// I want to make my code synchrous. My code below runs while the elevator is moving. Not sure if thats a good thing.
 
-// If I do want to make a timing code synchronous then use the new date and follow the example on this website.
+
+
+
+
+
+
+
 
 /* http://stackoverflow.com/questions/4122268/using-settimeout-synchronously-in-javascript */
 

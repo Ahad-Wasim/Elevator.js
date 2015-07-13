@@ -1,34 +1,3 @@
-
-/*  Elevator Rules */
-
-//  Floors start from zero temporarily.
-//  Each Elevator takes two seconds to go up a floor.
-//  Elevator can only hold up to a certain amount of pounds. (Anywhere from 1000 - 6000); NOTE higher the weight. The more money the customer has to pay for the elevator. Were going to start off with 3000 lbs.
-
-
-//  Elevator have assigned areas. Ex. Shoes Dept(3 Elevators)  Pants Dept(2 Elevators) 
-//  Each Department does have a number of floors
-
-
-
-
-
-/* Elevator Steps */
-
-// 1. Each Elevator starts at its current location
-
-// 2. When a call is recieved from a person, the elevator will have to check to see which elevator is the closest to that call and to see if that call is going to the same direction that the elevator is going.
-
-// 3. After arriving at that floor the elevator, the elevator can only pick up a certain amount of people from their.
-
-// 4. After picking up the customers up the  (By Direction it means UP || DOWN)
-
-// 5. The elevator can pick somebody up on the way only if they are going that certain direction.
-
-// 6. Elevator than drops all the people off and waits for its next request.
-
-
-
 function Department(name,floors,elevators){
 	this.departmentName = name; 
 	this.floors = createFloors(floors);
@@ -36,14 +5,15 @@ function Department(name,floors,elevators){
 }
 
 function Elevator(department,floorsNumber,elevatorNumber,weight){
-	this.dateCreated = new Date()
-	this.elevatorDepartment = department; 
-	this.floors = floorsNumber;
 	this.elevatorID = elevatorNumber;
+	this.floors = floorsNumber;
 	this.currentFloor = floorsNumber[0];
+	this.call = []; 
 	this.direction;
-	this.targetFloor;
+	this.targetFloor = [];
 	this.maximumWeight = weight;
+	this.elevatorDepartment = department; 
+	this.dateCreated = new Date()
 }
 
 
@@ -81,13 +51,13 @@ var furniture = new Department('Furniture',5,4);
 
 
 
-function callElevator(department,personLocation,direction){
+function callElevator(department,personLocation,direction,targetFloor){
 
 	/************** Location of the Person *************/
 
 	var personLocation = department.floors[personLocation];
 	var direction = direction.toUpperCase();
-
+	var personTarget = targetFloor;
 
 	/************** Location of the Person *************/
 
@@ -103,17 +73,14 @@ function callElevator(department,personLocation,direction){
 
 
 
-	/************* Find the closest Elevator ***********/    
+	/************* Find the closest Elevator ***********/   
+
+
+	// Next step this elevator should find the closest elevator even through the elevators that are moving but only moving in the same direction that the person wants to go (hint: UP - DOWN);
+
 
 	var departmentElevatorArray = department.elevator; // grabbed from the department Elevator Property
 
-
-
-
-
-	departmentElevatorArray[0].currentFloor = 6;
-	departmentElevatorArray[1].currentFloor = 7;
-	departmentElevatorArray[2].currentFloor = 5;
 
 
 
@@ -150,17 +117,12 @@ function callElevator(department,personLocation,direction){
 
 	});
 
-	console.log('this is the closest Elevator',closestElevator.elevatorID);
-	console.log('this is the distance from person',closestElevatorNumber);
+
 
 	
 	/************* Find the closest Elevator ***********/
 
 
-
-
-
-
 	
 
 
@@ -173,8 +135,24 @@ function callElevator(department,personLocation,direction){
 
 
 
+	/************* Call the Elevator *****************/
+
+	// Note a call can only have the floors between the first Call and the target Floor.
 
 	
+	closestElevator.call.push(personLocation)
+	closestElevator.direction = direction;
+	closestElevator.targetFloor.push(personTarget)
+
+	console.log(closestElevator);
+
+	/************* Call the Elevator *****************/
+
+
+
+
+// call elevator function will end once we have a call request pushed inside an array and a target floor.
+
 	
 
 }  // closes callElevator	
@@ -189,7 +167,7 @@ function callElevator(department,personLocation,direction){
 
 
 
-callElevator(videoGames,6,'down'); // this can represent buttons
+callElevator(videoGames,6,'down',0); // this can represent buttons
 
 
 
