@@ -50,13 +50,12 @@ var furniture = new Department('Furniture',5,4);
 
 
 
-
 function callElevator(department,personLocation,direction,targetFloor){
 
 	/************** Location of the Person *************/
 
 	var personLocation = department.floors[personLocation];
-	var direction = direction.toUpperCase();
+	var personDirection = direction.toUpperCase();
 	var personTarget = targetFloor;
 
 	/************** Location of the Person *************/
@@ -70,62 +69,98 @@ function callElevator(department,personLocation,direction,targetFloor){
 
 
 
+	/************* Find Possible Elevators ***********/   
 
 
+	/* Test which Moving or Non-Moving Elevators can pick you up */
 
-	/************* Find the closest Elevator ***********/   
-
-
-	// Next step this elevator should find the closest elevator even through the elevators that are moving but only moving in the same direction that the person wants to go (hint: UP - DOWN);
-
+	
 
 	var departmentElevatorArray = department.elevator; // grabbed from the department Elevator Property
 
+	
+
+	// departmentElevatorArray[0].direction = 'DOWN';
+	// departmentElevatorArray[0].currentFloor = 7;
+	// departmentElevatorArray[1].direction = 'STOPPED';
+	// departmentElevatorArray[1].currentFloor = 5;
+	// departmentElevatorArray[2].direction = 'DOWN';
+	// departmentElevatorArray[2].currentFloor = 5;
 
 
 
 
-	var closestElevator  = departmentElevatorArray[0];
+	var possibleElevators = _.filter(departmentElevatorArray,function(eachElevator){
+		var elevatorDirection = eachElevator.direction;
+		var current = eachElevator.currentFloor;
+
+		if(elevatorDirection === 'STOPPED' || elevatorDirection === undefined){
+			return eachElevator;
+		} else if(elevatorDirection === personDirection){ 
+				// the rest are moving elevators
+			if(elevatorDirection === 'DOWN' &&  current >= personLocation){
+					return eachElevator;
+		   		} else if(elevatorDirection === 'UP' && current <= personLocation  ){
+					return eachElevator;
+		 		}		
+		 } else {
+		 	// this means no elevator is available right now because we didn't get anything returned back. If thats the case keep calling this function over and over agan until an elevator is available.
+
+		 	// put this into a function and keep calling this until an elevator is available
+		 }  
 
 
-	if(departmentElevatorArray[0].currentFloor > personLocation){
-		var closestElevatorNumber = departmentElevatorArray[0].currentFloor - personLocation;
+	}); // closes filter
+
+
+ /************* Find Possible Elevators ***********/  
+
+
+
+
+
+
+/************* Find the closest Elevator ***********/
+
+
+var closestElevator = possibleElevators[0];
+
+if(possibleElevators[0].currentFloor > personLocation){
+		var closestElevatorNumber = possibleElevators[0].currentFloor - personLocation;
 	} else {
-		var closestElevatorNumber = personLocation - departmentElevatorArray[0].currentFloor;
+		var closestElevatorNumber = personLocation - possibleElevators[0].currentFloor;
 	}
 
 
 
 
+
+		_.each(possibleElevators,function(eachElevator){
+
+			var c = eachElevator.currentFloor
+
+			if( personLocation <= c  &&  c - personLocation < closestElevatorNumber){
+
+				closestElevatorNumber = c - personLocation
+				closestElevator = eachElevator;
+
+			} else if(personLocation >= c && personLocation - c < closestElevatorNumber ){
+
+				closestElevatorNumber = personLocation - c;
+				closestElevator = eachElevator;
+
+			}
+
+		});
+
+		console.log('I am calling',closestElevator.elevatorID);
+		console.log('this elevator is',closestElevatorNumber + ' floors away');
+
 	
-
-	_.each(departmentElevatorArray,function(eachElevator){
-		var current = eachElevator.currentFloor;
-
-
-		if( personLocation <= current  &&  current - personLocation < closestElevatorNumber){
-
-			closestElevatorNumber = current - personLocation
-			closestElevator = eachElevator;
-
-		} else if(personLocation >= current && personLocation - current < closestElevatorNumber ){
-
-			closestElevatorNumber = personLocation - current;
-			closestElevator = eachElevator;
-
-		}
-
-	});
-
-
-
-	
-	/************* Find the closest Elevator ***********/
-
-
 	
 
 
+/************* Find the closest Elevator ***********/
 
 
 
@@ -135,39 +170,107 @@ function callElevator(department,personLocation,direction,targetFloor){
 
 
 
-	/************* Call the Elevator *****************/
+
+
+/************** Call the Elevator *******************/
 
 	// Note a call can only have the floors between the first Call and the target Floor.
 
 	
 	closestElevator.call.push(personLocation)
-	closestElevator.direction = direction;
+	closestElevator.direction = personDirection;
 	closestElevator.targetFloor.push(personTarget)
 
-	console.log(closestElevator);
+	console.log('I got assigned to go to the', closestElevator.targetFloor + ' floor');
+	console.log('The direction Im heading is',closestElevator.direction);
 
-	/************* Call the Elevator *****************/
+/************* Call the Elevator *********************/
+
+
+
+
 
 
 
 
 // call elevator function will end once we have a call request pushed inside an array and a target floor.
 
-	
-
-}  // closes callElevator	
+		
 
 
-
-
-
-
-
-
-
+}  //closes callElevator
 
 
 callElevator(videoGames,6,'down',0); // this can represent buttons
+callElevator(videoGames,6,'down',0)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
